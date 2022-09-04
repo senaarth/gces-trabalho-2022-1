@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   database:
-    container_name: db
+    container_name: database
     image: postgres:13.4-alpine
     restart: always
     user: postgres
@@ -10,16 +10,32 @@ services:
       - pgdata:/var/lib/postgresql
     environment:
       - LC_ALL=C.UTF-8
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=password
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=db
+      - POSTGRES_DB=library_db
     ports:
-      - 5433:5432
+      - 5432:5432
+    networks:
+      - postgres
+    
+  backend: 
+    container_name: backend
+    build: 
+      context: ./library_back
+      dockerfile: Dockerfile
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - backend:/library_back/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - "database"
     networks:
       - postgres
 
 volumes:
   pgdata:
+  backend:
 
 networks:
   postgres:
