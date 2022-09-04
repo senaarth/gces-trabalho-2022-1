@@ -33,9 +33,24 @@ services:
     networks:
       - postgres
 
+  frontend: 
+    container_name: frontend
+    build: 
+      context: ./library_front
+    command: npm start
+    volumes:
+      - frontend:/library_front/build
+    ports:
+      - 3000:3000
+    depends_on:
+      - "backend"
+    networks:
+      - postgres
+
 volumes:
   pgdata:
   backend:
+  frontend:
 
 networks:
   postgres:
