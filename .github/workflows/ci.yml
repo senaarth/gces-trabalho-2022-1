@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: POSTGRES_ENV
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        env:
+          POSTGRES_DB: ${{env.POSTGRES_DB}}
+          POSTGRES_USER: ${{env.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{env.POSTGRES_PASSWORD}}
+          POSTGRES_HOST: ${{env.POSTGRES_HOST}}
+          POSTGRES_PORT: ${{env.POSTGRES_PORT}}
+        run: docker-compose up --build
