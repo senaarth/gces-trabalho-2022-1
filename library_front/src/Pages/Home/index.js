@@ -24,7 +24,7 @@ const Home = () => {
         resBooks();
     }, []);
 
-      const listBooks = books.map((book) =>
+      const listBooks = books?.map((book) =>
         <Book
             title={book.title}
             author={book.author}
