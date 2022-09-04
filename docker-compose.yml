@@ -47,6 +47,18 @@ services:
     networks:
       - postgres
 
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - "frontend"
+    networks:
+      - postgres
+
 volumes:
   pgdata:
   backend:
